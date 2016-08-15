@@ -3,42 +3,61 @@ let fns = Object.keys(R)
     window[x] = R[x]
   })
 
-var damageTaken = (defender, attacker) =>
-  subtract(
-    pathOr(0, ['weapon', 'damage'], attacker),
-    pathOr(0, ['armor', 'defense'], defender)
-  )
-
-var attacks = (attacker, defender) => {
-  let remainingLife = subtract(
-    propOr(0, 'life', defender),
-    damageTaken(defender, attacker)
-  )
-
-  return assoc('life', remainingLife, defender)
-}
-
-var defends = flip(attacks)
-
-var isAlive = propSatisfies(lt(0), 'life')
-
 
 var code = [
-`var attacks = ${attacks.toString()}
-var hero = { life: 10 }
-var imp = { weapon: { damage: 5 } }
-attacks(imp, hero)
+`Hero = { name: 'hero', life: 100 }
+
+// Anyone can see he's a hero object.
+// is(Object, Hero)
+//
+// He got fed up, took his armor.
+// Hero = assoc('armor', { type: 'tunic' }, Hero)
+//
+// The armor was nice enough to give some defense.
+// Hero = assocPath(['armor', 'defense'], 10, Hero)
+//
+// The Hero got reacquainted with his dagger.
+// Hero = merge(Hero, { weapon: { type: 'dagger', attack: 15 } })
+//
+// There's no adventure without some ham, bread and eggs
+// Hero = merge(Hero, { inventory: ['ham', 'bread', 'eggs'] })
+//
+// Before leaving for good, he makes a quick check everything is in order.
+// 'All set? ' + none(isNil, props(['armor', 'weapon', 'inventory'], Hero))
+`,
+`
+damageTaken = (defender, attacker) => clamp(0, 100, subtract(
+    pathOr(0, ['weapon', 'damage'], attacker),
+    pathOr(0, ['armor', 'defense'], defender)
+  ))
+
+imp = { life: 10, weapon: { damage: 15 } }
+//attacks = (attacker, defender) => {
+//  let decreaseLife = pipe(subtract(__, damageTaken(defender, attacker)), clamp(0, 100))
+//  return evolve({ life: decreaseLife }, defender)
+//}
+//
+//defends = flip(attacks)
+//
+//isAlive = propSatisfies(lt(0), 'life')
 `
 ]
-
 var codeTemplate = (i, x) => `<iframe class="ace editor" data-theme="ace/theme/monokai" data-mode="ace/mode/javascript" data-onchange="codeChange(${i}, editor)">${x}</iframe>`
+
+var sectionCodeTemplate = `<div class="code"></div>
+<div class="code-result">
+  <p>Result</p>
+  <pre class="result"></pre>
+</div>`
+
+window.Hero = {}
 
 var setup = () => {
   var q = x => document.querySelector(x)
 
   addIndex(map)((x, i) =>{
     let text = codeTemplate(i, x)
-    console.log(text)
+    q(`[data-code="${i}"]`).innerHTML = sectionCodeTemplate
     q(`[data-code="${i}"] .code`).innerHTML = text
   }, code)
 
@@ -63,12 +82,12 @@ var setup = () => {
       )
       code = parseCode(code)
 
-      console.log(code)
+      // console.log(code)
 
       var result = ""
       try {
         eval(code)
-        q(`[data-slide="${x.no}"] .result`).innerHTML = JSON.stringify(result)
+        q(`[data-code="${x.no}"] .result`).innerText = JSON.stringify(result, null, '  ')
       } catch (e) {
         console.error('Result has errors', e.toString())
       }
