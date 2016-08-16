@@ -31,8 +31,7 @@ imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
 imps = repeat(imp, 3)
 
 var code1 = [
-`
-// Pssst...
+`// Pssst...
 //
 // Yeah you, can you help out the Hero get equiped and fight some Imps?
 // Excellent! You're amazing!
@@ -48,7 +47,7 @@ var code1 = [
 // is(Number, Hero)`,
 
 `// By the way, if something goes red, check in your console,
-// a shiny new error will await you there.
+// a shiny new error will await for you there.
 //
 // :: assoc(String, Any, Object) => Object
 // Hero = assoc('armor', { type: 'tunic' }, Hero)`,
