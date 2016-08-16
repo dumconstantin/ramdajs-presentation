@@ -35,15 +35,14 @@ var code1 = [
 // Pssst...
 //
 // Yeah you, can you help out the Hero get equiped and fight some Imps?
-// You're amazing!
-// (uncomment the line with the Hero)
-//
-// 1.1.
+// Excellent! You're amazing!
+// (just uncomment the line with the Hero to begin your journy)
+
 // Hero = { name: 'hero', life: 100 }`,
 
 `// When you see ";;" that's a new function and a short description.
 // Check http://ramdajs.com/docs/ for more info
-// 1.2.
+
 // :: is(Object, Any) => Boolean
 // is(Object, Hero)
 // is(Number, Hero)`,
@@ -51,28 +50,23 @@ var code1 = [
 `// By the way, if something goes red, check in your console,
 // a shiny new error will await you there.
 //
-// 1.3.
 // :: assoc(String, Any, Object) => Object
 // Hero = assoc('armor', { type: 'tunic' }, Hero)`,
 
-`// 1.4.
-// :: assocPath(Array, Any, Object) => Object
+`// :: assocPath(Array, Any, Object) => Object
 // Hero = assocPath(['armor', 'defense'], 5, Hero)`,
 
-`// 1.5.
-// :: merge(Object, Object) => Object
+`// :: merge(Object, Object) => Object
 // weapon = { weapon: { type: 'dagger', damage: 7 } }
 // Hero = merge(Hero, weapon)`,
 
-`// 1.6.
-// :: lensProp(String) => Lens
+`// :: lensProp(String) => Lens
 // :: set(Lens, Any, Object) => Object
 // inventory = ['ham', 'bread', 'eggs']
 // Hero = set(lensProp('inventory'), inventory, Hero)
 // Hero = set(lensProp('gold'), 10, Hero)`,
 
-`// 1.7.
-// :: none(Function, Array) => Boolean
+`// :: none(Function, Array) => Boolean
 // :: isNil(Any) => Boolean
 // :: props(Array, Object) => Array
 // required = ['armor', 'weapon', 'inventory', 'gold']
@@ -81,8 +75,7 @@ var code1 = [
 ]
 
 var code2 = [
-`// 2.1.
-Hero = {
+`Hero = {
   "name": "hero",
   "life": 100,
   "gold": 10,
@@ -99,53 +92,45 @@ Hero = {
     "bread",
     "eggs"
   ]
-}
-Hero`,
+}`,
 
-`// 2.2.
-// :: clamp(Ordered String|Number|Dates, Same, Same) => Same
+`// :: clamp(Ordered String|Number|Dates, Same, Same) => Same
 // lifeClamp = clamp(0, 100)
 
 // lifeClamp(54)
 // lifeClamp(-150)
 // lifeClamp(200)`,
 
-`// 2.3.
-// :: lt(Number, Number) => Boolean
+`// :: lt(Number, Number) => Boolean
 // :: propSatisfies(Function, String, Object) => Boolean
 // isAlive = propSatisfies(lt(0), 'life')
 
 // isAlive({ life: 10 })
 // isAlive({ life: -10 })`,
 
-`// 2.4.
-// :: gte(Number, Number) => Boolean
+`// :: gte(Number, Number) => Boolean
 // isDead = propSatisfies(gte(0), 'life')
 
 // isDead({ life: 10 })
 // isDead({ life: -10 })`,
 
-`// 2.5.
-// :: pathOr(Any, Array, Object) => Any
+`// :: pathOr(Any, Array, Object) => Any
 // defense = pathOr(0, ['armor', 'defense'])
 
 // defense(Hero)`,
 
-`// 2.6.
-// damage = pathOr(0, ['weapon', 'damage'])
+`// damage = pathOr(0, ['weapon', 'damage'])
 
 // damage(Hero)`,
 
-`// 2.7.
-// :: subtract(Number, Number) => Number
+`// :: subtract(Number, Number) => Number
 // :: curry(Function) => Function
 // damageTaken = curry((defender, attacker) =>
 //   lifeClamp(subtract(damage(attacker), defense(defender))))
 
 // damageTaken({ armor: { defense: 2 } }, Hero)`,
 
-`// 2.8.
-// :: pipe(Functions...) => Function
+`// :: pipe(Functions...) => Function
 // :: evolve(Object, Object) => Object
 // attacks = curry((attacker, defender) => {
 //  let damage = damageTaken(defender, attacker)
@@ -156,16 +141,14 @@ Hero`,
 // imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
 // attacks(Hero, imp)`,
 
-`// 2.9.
-// :: flip(Function) => Function
+`// :: flip(Function) => Function
 // defends = flip(attacks)
 
 // defends(Hero, imp)`
 ]
 
 var code3 = [
-`// 3.1.
-Hero = {
+`Hero = {
   "name": "hero",
   "life": 100,
   "gold": 10,
@@ -182,17 +165,14 @@ Hero = {
     "bread",
     "eggs"
   ]
-}
-Hero`,
+}`,
 
 
-`// 3.2.
-// repeat(Any, Number) => Array
+`// repeat(Any, Number) => Array
 // imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
 // imps = repeat(imp, 3)`,
 
-`// 3.3.
-// map(Function, Array) => Array
+`// map(Function, Array) => Array
 // reduce(Function, Any, Array) => Any
 
 // Hero = reduce(defends, Hero,  imps)
@@ -200,8 +180,7 @@ Hero`,
 // Hero = reduce(defends, Hero, imps)
 // imps = map(attacks(Hero), imps)`,
 
-`// 3.4.
-// all(Function, Array) => Boolean
+`// all(Function, Array) => Boolean
 // all(isDead, imps)
 
 // Hero = assoc('victories', imps.length, Hero)`
