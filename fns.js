@@ -221,7 +221,7 @@ var setup = () => {
  var spacer = join('', repeat('\n', 6))
   addIndex(map)((x, i) =>{
     x = x.join(spacer)
-    x = spacer + x + spacer
+    x = x + spacer
     let text = codeTemplate(i, x)
     q(`[data-code="${i}"]`).innerHTML = sectionCodeTemplate
     q(`[data-code="${i}"] .code`).innerHTML = text
