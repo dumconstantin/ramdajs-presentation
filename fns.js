@@ -4,33 +4,47 @@ let fns = Object.keys(R)
   })
 
 
-var code = [
-`Hero = { name: 'hero', life: 100 }
+var code1 = [
+`Hero = { name: 'hero', life: 100 }`,
 
-// Anyone can see he's a hero object.
-// is(Object, Hero)
-//
-// He got fed up, took his armor.
-// Hero = assoc('armor', { type: 'tunic' }, Hero)
-//
-// The armor was nice enough to give some defense.
-// Hero = assocPath(['armor', 'defense'], 10, Hero)
-//
-// The Hero got reacquainted with his dagger.
-// Hero = merge(Hero, { weapon: { type: 'dagger', attack: 15 } })
-//
-// There's no adventure without some ham, bread and eggs
-// Hero = merge(Hero, { inventory: ['ham', 'bread', 'eggs'] })
-//
-// Before leaving for good, he makes a quick check everything is in order.
-// 'All set? ' + none(isNil, props(['armor', 'weapon', 'inventory'], Hero))
-`,
-`
-damageTaken = (defender, attacker) => clamp(0, 100, subtract(
-    pathOr(0, ['weapon', 'damage'], attacker),
-    pathOr(0, ['armor', 'defense'], defender)
-  ))
+`// is(Object, Any) => Boolean
+// is(Object, Hero)`,
 
+`// assoc(String, Any, Object) => Object
+// Hero = assoc('armor', { type: 'tunic' }, Hero)`,
+
+`// assocPath(Array, Any, Object) => Object
+// Hero = assocPath(['armor', 'defense'], 10, Hero)`,
+
+`// merge(Object, Object) => Object
+// Hero = merge(Hero, { weapon: { type: 'dagger', attack: 15 } })`,
+
+`// lensProp(String) => Lens
+// set(Lens, Any, Object) => Object
+// Hero = set(lensProp('inventory'), { inventory: ['ham', 'bread', 'eggs'] }, Hero)`,
+
+`// none(Function, Array) => Boolean
+// isNil(Any) => Boolean
+// props(Array, Object) => Array
+// 'All set? ' + none(isNil, props(['armor', 'weapon', 'inventory'], Hero))`
+
+]
+
+var code2 = [
+`// clamp(Ordered String|Number|Dates, Same, Same) => Same
+// bound = clamp(0, 100)`,
+
+`// pathOr(Any, Array, Object) => Any
+// damage = pathOr(0, ['weapon', 'damage'])
+// defense = pathOr(0, ['armor', 'defense'])`,
+
+`// subtract(Number, Number) => Number
+//damageTaken = (d, a) => bound(subtract(damage(attacker), defense(defender)))`
+
+]
+
+var code = [code1, code2]
+/*
 imp = { life: 10, weapon: { damage: 15 } }
 //attacks = (attacker, defender) => {
 //  let decreaseLife = pipe(subtract(__, damageTaken(defender, attacker)), clamp(0, 100))
@@ -42,6 +56,7 @@ imp = { life: 10, weapon: { damage: 15 } }
 //isAlive = propSatisfies(lt(0), 'life')
 `
 ]
+*/
 var codeTemplate = (i, x) => `<iframe class="ace editor" data-theme="ace/theme/monokai" data-mode="ace/mode/javascript" data-onchange="codeChange(${i}, editor)">${x}</iframe>`
 
 var sectionCodeTemplate = `<div class="code"></div>
@@ -55,7 +70,10 @@ window.Hero = {}
 var setup = () => {
   var q = x => document.querySelector(x)
 
+ var spacer = join('', repeat('\n', 7))
   addIndex(map)((x, i) =>{
+    x = x.join(spacer)
+    x = spacer + x + spacer
     let text = codeTemplate(i, x)
     q(`[data-code="${i}"]`).innerHTML = sectionCodeTemplate
     q(`[data-code="${i}"] .code`).innerHTML = text
@@ -88,13 +106,17 @@ var setup = () => {
       try {
         eval(code)
         q(`[data-code="${x.no}"] .result`).innerText = JSON.stringify(result, null, '  ')
+        q(`[data-code="${x.no}"]`).setAttribute('data-error', false)
       } catch (e) {
         console.error('Result has errors', e.toString())
+        q(`[data-code="${x.no}"]`).setAttribute('data-error', true)
       }
     })
 
 
     Reveal.initialize({
+      width: document.body.offsetWidth,
+      height: 800,
       dependencies: [
       ]
     })
@@ -132,7 +154,7 @@ function RevealAce() {
       var editor = w.ace.edit(d.getElementById('editor'));
       var aceConf = extend({}, options, iframe.dataset);
       editor.setOptions({
-        fontSize: "16pt"
+        fontSize: "22pt"
       });
 
       // Configuration

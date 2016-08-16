@@ -20,11 +20,17 @@
             margin-top: 0
           }
           .code-result .result {
-            font-size: 18px;
+            font-size: 20pt;
             text-align: left;
+          }
+          [data-code][data-error="true"] .code-result p {
+            border: 1px solid red;
           }
           pre {
             box-shadow: none !important;
+          }
+          iframe {
+            max-width: 100% !important;
           }
         </style>
     </head>
