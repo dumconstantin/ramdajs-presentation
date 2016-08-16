@@ -33,9 +33,9 @@ imps = repeat(imp, 3)
 var code1 = [
 `// Pssst...
 //
-// Yeah you, can you help out the Hero get equiped and fight some Imps?
+// Yeah you, can you help out the Hero get equiped?
 // Excellent! You're amazing!
-// (just uncomment the line with the Hero to begin your journy)
+// (just uncomment the line with the Hero to begin your journey)
 
 // Hero = { name: 'hero', life: 100 }`,
 
