@@ -215,7 +215,7 @@ You = { name: 'the-programmer', life: 100 }
 
 var code = [code1, code2, code3, code4]
 
-var codeTemplate = (i, x) => `<iframe class="ace editor" data-theme="ace/theme/monokai" data-mode="ace/mode/javascript" data-onchange="codeChange(${i}, editor)">${x}</iframe>`
+var codeTemplate = (i, x) => `<iframe class="ace editor" data-mode="ace/mode/javascript" data-onchange="codeChange(${i}, editor)">${x}</iframe>`
 
 var sectionCodeTemplate = `<div class="code"></div>
 <div class="code-result">
