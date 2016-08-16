@@ -40,7 +40,7 @@ var code1 = [
 
 // Hero = { name: 'hero', life: 100 }`,
 
-`// When you see ";;" that's a new function and a short description.
+`// When you see "::" that's a new function and a short description.
 // Check http://ramdajs.com/docs/ for more info
 
 // :: is(Object, Any) => Boolean
