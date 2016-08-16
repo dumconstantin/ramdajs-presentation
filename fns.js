@@ -4,59 +4,217 @@ let fns = Object.keys(R)
   })
 
 
+// Global fns
+lifeClamp = clamp(0, 100)
+
+isAlive = propSatisfies(lt(0), 'life')
+isDead = propSatisfies(gte(0), 'life')
+
+defense = pathOr(0, ['armor', 'defense'])
+
+damage = pathOr(0, ['weapon', 'damage'])
+
+damageTaken = curry((defender, attacker) =>
+   lifeClamp(subtract(damage(attacker), defense(defender))))
+
+attacks = curry((attacker, defender) => {
+  let damage = damageTaken(defender, attacker)
+  let updateLife = pipe(subtract(__, damage), lifeClamp)
+  return evolve({ life: updateLife }, defender)
+})
+
+defends = flip(attacks)
+
+weapon = { weapon: { type: 'dagger', damage: 7 } }
+inventory = ['ham', 'bread', 'eggs']
+imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
+imps = repeat(imp, 3)
+
 var code1 = [
-`Hero = { name: 'hero', life: 100 }`,
+`
+// 1.1.
+// Hero = { name: 'hero', life: 100 }`,
 
-`// is(Object, Any) => Boolean
-// is(Object, Hero)`,
+`// 1.2.
+// :: is(Object, Any) => Boolean
+// is(Object, Hero)
+// is(Number, Hero)`,
 
-`// assoc(String, Any, Object) => Object
+`// 1.3.
+// :: assoc(String, Any, Object) => Object
 // Hero = assoc('armor', { type: 'tunic' }, Hero)`,
 
-`// assocPath(Array, Any, Object) => Object
-// Hero = assocPath(['armor', 'defense'], 10, Hero)`,
+`// 1.4.
+// :: assocPath(Array, Any, Object) => Object
+// Hero = assocPath(['armor', 'defense'], 5, Hero)`,
 
-`// merge(Object, Object) => Object
-// Hero = merge(Hero, { weapon: { type: 'dagger', attack: 15 } })`,
+`// 1.5.
+// :: merge(Object, Object) => Object
+// weapon = { weapon: { type: 'dagger', damage: 7 } }
+// Hero = merge(Hero, weapon)`,
 
-`// lensProp(String) => Lens
-// set(Lens, Any, Object) => Object
-// Hero = set(lensProp('inventory'), { inventory: ['ham', 'bread', 'eggs'] }, Hero)`,
+`// 1.6.
+// :: lensProp(String) => Lens
+// :: set(Lens, Any, Object) => Object
+// inventory = ['ham', 'bread', 'eggs']
+// Hero = set(lensProp('inventory'), inventory, Hero)
+// Hero = set(lensProp('gold'), 10, Hero)`,
 
-`// none(Function, Array) => Boolean
-// isNil(Any) => Boolean
-// props(Array, Object) => Array
-// 'All set? ' + none(isNil, props(['armor', 'weapon', 'inventory'], Hero))`
+`// 1.7.
+// :: none(Function, Array) => Boolean
+// :: isNil(Any) => Boolean
+// :: props(Array, Object) => Array
+// required = ['armor', 'weapon', 'inventory', 'gold']
+// 'All set? ' + none(isNil, props(required, Hero))`
 
 ]
 
 var code2 = [
-`// clamp(Ordered String|Number|Dates, Same, Same) => Same
-// bound = clamp(0, 100)`,
+`// 2.1.
+Hero = {
+  "name": "hero",
+  "life": 100,
+  "gold": 10,
+  "armor": {
+    "type": "tunic",
+    "defense": 5
+  },
+  "weapon": {
+    "type": "dagger",
+    "damage": 7
+  },
+  "inventory": [
+    "ham",
+    "bread",
+    "eggs"
+  ]
+}
+Hero`,
 
-`// pathOr(Any, Array, Object) => Any
+`// 2.2.
+// :: clamp(Ordered String|Number|Dates, Same, Same) => Same
+// lifeClamp = clamp(0, 100)
+
+// lifeClamp(54)
+// lifeClamp(-150)
+// lifeClamp(200)`,
+
+`// 2.3.
+// :: lt(Number, Number) => Boolean
+// :: propSatisfies(Function, String, Object) => Boolean
+// isAlive = propSatisfies(lt(0), 'life')
+
+// isAlive({ life: 10 })
+// isAlive({ life: -10 })`,
+
+`// 2.4.
+// :: gte(Number, Number) => Boolean
+// isDead = propSatisfies(gte(0), 'life')
+
+// isDead({ life: 10 })
+// isDead({ life: -10 })`,
+
+`// 2.5.
+// :: pathOr(Any, Array, Object) => Any
+// defense = pathOr(0, ['armor', 'defense'])
+
+// defense(Hero)`,
+
+`// 2.6.
 // damage = pathOr(0, ['weapon', 'damage'])
-// defense = pathOr(0, ['armor', 'defense'])`,
 
-`// subtract(Number, Number) => Number
-//damageTaken = (d, a) => bound(subtract(damage(attacker), defense(defender)))`
+// damage(Hero)`,
+
+`// 2.7.
+// :: subtract(Number, Number) => Number
+// :: curry(Function) => Function
+// damageTaken = curry((defender, attacker) =>
+//   lifeClamp(subtract(damage(attacker), defense(defender))))
+
+// damageTaken({ armor: { defense: 2 } }, Hero)`,
+
+`// 2.8.
+// :: pipe(Functions...) => Function
+// :: evolve(Object, Object) => Object
+// attacks = curry((attacker, defender) => {
+//  let damage = damageTaken(defender, attacker)
+//  let updateLife = pipe(subtract(__, damage), lifeClamp)
+//  return evolve({ life: updateLife }, defender)
+// })
+
+// imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
+// attacks(Hero, imp)`,
+
+`// 2.9.
+// :: flip(Function) => Function
+// defends = flip(attacks)
+
+// defends(Hero, imp)`
+]
+
+var code3 = [
+`// 3.1.
+Hero = {
+  "name": "hero",
+  "life": 100,
+  "gold": 10,
+  "armor": {
+    "type": "tunic",
+    "defense": 5
+  },
+  "weapon": {
+    "type": "dagger",
+    "damage": 7
+  },
+  "inventory": [
+    "ham",
+    "bread",
+    "eggs"
+  ]
+}
+Hero`,
+
+
+`// 3.2.
+// repeat(Any, Number) => Array
+// imp = { life: 10, weapon: { damage: 10 }, armor: { defense: 2 } }
+// imps = repeat(imp, 3)`,
+
+`// 3.3.
+// map(Function, Array) => Array
+// reduce(Function, Any, Array) => Any
+
+// Hero = reduce(defends, Hero,  imps)
+// imps = map(attacks(Hero), imps)
+// Hero = reduce(defends, Hero, imps)
+// imps = map(attacks(Hero), imps)`,
+
+`// 3.4.
+// all(Function, Array) => Boolean
+// all(isDead, imps)
+
+// Hero = assoc('victories', imps.length, Hero)`
+]
+
+var code4 = [
+`adventure = pipe(
+  assoc('armor', { type: 'tunic' }),
+  assocPath(['armor', 'defense'], 5),
+  merge(__, weapon),
+  set(lensProp('inventory'), inventory),
+  set(lensProp('gold'), 10),
+  reduce(defends, __,  imps),
+  reduce(defends, __, imps),
+  assoc('victories', imps.length)
+)
+
+You = { name: 'the-programmer', life: 100 }
+// You = adventure(You)`
 
 ]
 
-var code = [code1, code2]
-/*
-imp = { life: 10, weapon: { damage: 15 } }
-//attacks = (attacker, defender) => {
-//  let decreaseLife = pipe(subtract(__, damageTaken(defender, attacker)), clamp(0, 100))
-//  return evolve({ life: decreaseLife }, defender)
-//}
-//
-//defends = flip(attacks)
-//
-//isAlive = propSatisfies(lt(0), 'life')
-`
-]
-*/
+var code = [code1, code2, code3, code4]
+
 var codeTemplate = (i, x) => `<iframe class="ace editor" data-theme="ace/theme/monokai" data-mode="ace/mode/javascript" data-onchange="codeChange(${i}, editor)">${x}</iframe>`
 
 var sectionCodeTemplate = `<div class="code"></div>
@@ -70,7 +228,7 @@ window.Hero = {}
 var setup = () => {
   var q = x => document.querySelector(x)
 
- var spacer = join('', repeat('\n', 7))
+ var spacer = join('', repeat('\n', 6))
   addIndex(map)((x, i) =>{
     x = x.join(spacer)
     x = spacer + x + spacer
