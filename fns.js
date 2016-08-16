@@ -32,6 +32,21 @@ imps = repeat(imp, 3)
 
 var code1 = [
 `
+// Hi, can you help out our Hero to get equiped and
+// go fight some Imps? Great!
+//
+// Just uncomment the lines where you see function declarations
+// and look at your right, you should see the result of the last
+// uncommented function. If there's an error, the Result title
+// will become red and an error will await you in the console.
+//
+// The "::" lines present the function you're about to learn but
+// you should really check out:
+// http://ramdajs.com/docs/
+// to learn more about every function.
+//
+// And so, the adventure begins..
+
 // 1.1.
 // Hero = { name: 'hero', life: 100 }`,
 
