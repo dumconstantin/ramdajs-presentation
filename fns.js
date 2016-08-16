@@ -32,30 +32,26 @@ imps = repeat(imp, 3)
 
 var code1 = [
 `
-// Hi, can you help out our Hero to get equiped and
-// go fight some Imps? Great!
+// Pssst...
 //
-// Just uncomment the lines where you see function declarations
-// and look at your right, you should see the result of the last
-// uncommented function. If there's an error, the Result title
-// will become red and an error will await you in the console.
+// Yeah you, can you help out the Hero get equiped and fight some Imps?
+// You're amazing!
+// (uncomment the line with the Hero)
 //
-// The "::" lines present the function you're about to learn but
-// you should really check out:
-// http://ramdajs.com/docs/
-// to learn more about every function.
-//
-// And so, the adventure begins..
-
 // 1.1.
 // Hero = { name: 'hero', life: 100 }`,
 
-`// 1.2.
+`// When you see ";;" that's a new function and a short description.
+// Check http://ramdajs.com/docs/ for more info
+// 1.2.
 // :: is(Object, Any) => Boolean
 // is(Object, Hero)
 // is(Number, Hero)`,
 
-`// 1.3.
+`// By the way, if something goes red, check in your console,
+// a shiny new error will await you there.
+//
+// 1.3.
 // :: assoc(String, Any, Object) => Object
 // Hero = assoc('armor', { type: 'tunic' }, Hero)`,
 
